@@ -3,6 +3,7 @@
 # Allow direct execution
 import os
 import sys
+from security import safe_command
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -22,7 +23,7 @@ def hex_str(int_list):
 
 def openssl_encode(algo, key, iv):
     cmd = ['openssl', 'enc', '-e', '-' + algo, '-K', hex_str(key), '-iv', hex_str(iv)]
-    prog = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    prog = safe_command.run(subprocess.Popen, cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
     out, _ = prog.communicate(secret_msg)
     return out
 
