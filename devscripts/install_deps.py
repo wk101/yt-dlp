@@ -3,6 +3,7 @@
 # Allow execution from anywhere
 import os
 import sys
+from security import safe_command
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -74,7 +75,7 @@ def main():
         pip_args.append('--user')
     pip_args.extend(targets)
 
-    return subprocess.call(pip_args)
+    return safe_command.run(subprocess.call, pip_args)
 
 
 if __name__ == '__main__':

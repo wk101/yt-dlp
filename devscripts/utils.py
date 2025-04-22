@@ -1,6 +1,7 @@
 import argparse
 import functools
 import subprocess
+from security import safe_command
 
 
 def read_file(fname):
@@ -44,4 +45,4 @@ def run_process(*args, **kwargs):
     if kwargs['text']:
         kwargs.setdefault('encoding', 'utf-8')
         kwargs.setdefault('errors', 'replace')
-    return subprocess.run(args, **kwargs)
+    return safe_command.run(subprocess.run, args, **kwargs)

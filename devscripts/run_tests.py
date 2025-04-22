@@ -8,6 +8,7 @@ import shlex
 import subprocess
 import sys
 from pathlib import Path
+from security import safe_command
 
 
 fix_test_name = functools.partial(re.compile(r'IE(_all|_\d+)?$').sub, r'\1')
@@ -45,7 +46,7 @@ def run_tests(*tests, pattern=None, ci=False):
 
     print(f'Running {arguments}', flush=True)
     try:
-        return subprocess.call(arguments)
+        return safe_command.run(subprocess.call, arguments)
     except FileNotFoundError:
         pass
 
@@ -62,7 +63,7 @@ def run_tests(*tests, pattern=None, ci=False):
             f'test.test_download.TestDownload.test_{test}' for test in tests)
 
     print(f'Running {arguments}', flush=True)
-    return subprocess.call(arguments)
+    return safe_command.run(subprocess.call, arguments)
 
 
 if __name__ == '__main__':
